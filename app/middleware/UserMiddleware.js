@@ -2,7 +2,9 @@ var jwt = require('jsonwebtoken');
 
 export default  {
     checkUser : (req, res, next) => {
-        var a = 2;
+
+				console.log(req.headers)
+        var a = 1;
         if(a== 1){
             next()
         }else{

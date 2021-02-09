@@ -1,7 +1,7 @@
 import express from 'express'
 import middleware from '../middleware/UserMiddleware'
 
-// setting
+// setting export all Controller
 var fs = require('fs');
 fs.readdirSync('./app/controllers').forEach(function(file){
     if ( file.indexOf(".js") > -1 && file != "index.js" ) {
@@ -27,8 +27,8 @@ router.get("*", route('HomeController@notFound'))
 
 
 router.use(function(err, req, res, next) {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+	console.error(err.stack);
+	res.status(500).send('Server sedang bermasalah');
+});
 
 module.exports = router

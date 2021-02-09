@@ -7,36 +7,31 @@ import LoginModel from '../models/LoginModel'
 export default class LoginController{
 
 	static index(req, res) {
+		console.log(req.headers)
 		res.render("pages/login");
 	}
 
-	static login(req, res) {
-		res.render("pages/login");
+	static async set_login(req, res) {
+		const login = new LoginModel(req)
+		let cek = await login.cek_login(req.body.username, req.body.password)
+		
+		if(!cek.status){
+			res.redirect('/login');
+		}else{
+			var token = jwt.sign(cek.data, process.env.JWT_SECRET_KEY);
+			// res.header('X-JWT-TOKEN' , token )
+			res.setHeader('X-JWT-TOKEN', token);
+			res.render("pages/login");
+			// res.render("pages/login");
+		}
 	}
 
-	static set_login(req, res) {
-
-        console.log(req.body.username)
-        console.log(process.env.JWT_SECRET_KEY)
-
-        // res.redirect('/login');
-        var token = jwt.sign({ foo: 'bar' }, process.env.JWT_SECRET_KEY);
-        console.log(token);
-        var decoded;
-
-        try {
-            decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        } catch(err) {
-            console.log(err);
-        }
-        
-        console.log('decoded');
-        console.log(decoded);
-        
-		res.render("components/index");
+	static cek_login(req, res){
+		token = ''
+		try {
+			decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		} catch(err) {
+			console.log(err);
+		}
 	}
-
-    static cek_login(req, res){
-
-    }
 }
