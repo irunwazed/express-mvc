@@ -7,26 +7,26 @@ import LoginModel from '../models/LoginModel'
 export default class LoginController{
 
 	static index(req, res) {
-		console.log(req.headers)
 		res.render("pages/login");
 	}
 
-	static async set_login(req, res) {
+	static async setLogin(req, res) {
 		const login = new LoginModel(req)
 		let cek = await login.cek_login(req.body.username, req.body.password)
-		
 		if(!cek.status){
 			res.redirect('/login');
 		}else{
 			var token = jwt.sign(cek.data, process.env.JWT_SECRET_KEY);
-			// res.header('X-JWT-TOKEN' , token )
-			res.setHeader('X-JWT-TOKEN', token);
-			res.render("pages/login");
-			// res.render("pages/login");
+
+			// set session token
+			res.cookie('cokkieName', token, { maxAge: 900000, httpOnly: true })
+			// . set session token
+			
+			res.redirect('/admin/tes');
 		}
 	}
 
-	static cek_login(req, res){
+	static cekLogin(req, res){
 		token = ''
 		try {
 			decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -34,4 +34,9 @@ export default class LoginController{
 			console.log(err);
 		}
 	}
+
+	static setSession(){
+		
+	}
+
 }

@@ -1,14 +1,23 @@
 var jwt = require('jsonwebtoken');
 
 export default  {
-    checkUser : (req, res, next) => {
+  checkUser : (req, res, next) => {
 
-				console.log(req.headers)
-        var a = 1;
-        if(a== 1){
-            next()
-        }else{
-            res.redirect('/login');
-        }
+    console.log(req.headers)
+    var a = 1;
+    if(a== 1){
+      next()
+    }else{
+      res.redirect('/login');
     }
+  },
+
+  checkApi : (req, res, next) => {
+
+    let except = [
+      'login'
+    ]
+    next()
+
+  }
 }
