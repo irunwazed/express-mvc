@@ -3,7 +3,11 @@ import LoginModel from '../../models/LoginModel'
 export default class HomeController{
 
 	static async index(req, res)  {
-		res.render("components/index");
+		let api = {
+			status: true,
+			data: [],
+		}
+		res.send(api);
 	}
 
 	static notFound(req, res) {
