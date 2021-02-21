@@ -1,6 +1,6 @@
 import express from 'express'
 import middleware from '../middleware/UserMiddleware'
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 
 // setting export all Controller
 function route(_route){
@@ -14,22 +14,15 @@ function route(_route){
 }
 // . setting
 
-const router = express.Router()
 
+const router = express.Router()
 
 router.use('/api', middleware.checkApi);
 router.get("/api/tes", route('api/HomeController@index'))
 router.post("/api/login", [
-	check('username').isLength({ min: 5 }),
-	check('password').isLength({ min: 5 }),
-], (req, res) => {
-  const errors = validationResult(req);
-	console.log(req.body)
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-  res.send('user saved');
-})
+  check('username').isLength({ min: 5 }),
+  check('password').exists(),
+], route('api/LoginController@login'))
 
 router.use('/admin', middleware.checkUser);
 router.get("/admin/tes", route('HomeController@index'))

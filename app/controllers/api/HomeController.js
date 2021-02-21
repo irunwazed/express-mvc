@@ -10,7 +10,5 @@ export default class HomeController{
 		res.send(api);
 	}
 
-	static notFound(req, res) {
-		res.render("pages/not-found");
-	}
+	
 }
