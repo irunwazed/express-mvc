@@ -1,9 +1,9 @@
 const Database = require('../config/Database');
 const DB = new Database()
 DB.setConnection().then(()=>{
-
+console
 }, ()=>{
-  
+
 })
 var fs = require('fs');
 
