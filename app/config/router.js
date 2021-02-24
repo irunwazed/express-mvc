@@ -6,7 +6,7 @@ const { check } = require('express-validator');
 function route(_route){
   _route = _route.split("@")
   let path = '../controllers/'
-  let name = _route[0].split("/").join("")
+  let name = _route[0].split("/").join("_")
   if(exports[name] == null){
     exports[name] = require(path+_route[0])
   }
