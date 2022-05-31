@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 const { validationResult } = require('express-validator');
-dotenv.config()
+// dotenv.config()
 
 import LoginModel from '../../models/LoginModel'
 
@@ -13,8 +13,6 @@ export default class LoginController{
 			return res.status(422).json({ errors: errors.array() });
 		}
 		const login = new LoginModel(req)
-		let pesan = 'Server sedang bermasalah!'
-		let status = false
 		let cek = await login.cek_login(req.body.username, req.body.password)
 		
 		if(!cek.status){
@@ -29,18 +27,35 @@ export default class LoginController{
 			res.send({
 				pesan: cek.pesan,
 				status: cek.status,
-				token: token
+				token: token,
 			});
 		}
 	}
 
 	static cekLogin(req, res){
-		token = ''
+		let token = req.header(process.env.JWT_NAME)
+		
+		let pesan = 'Server sedang bermasalah!'
+		let status = false
+		let decoded = ''
+		
 		try {
 			decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			pesan = ''
+			status = true
 		} catch(err) {
+			pesan = err.message
 			console.log(err);
 		}
+
+		res.send({
+			pesan: pesan, 
+			status: status,
+			session: {
+				username: decoded.username,
+				level: decoded.level
+			}
+		});
 	}
 
 	static setSession(){

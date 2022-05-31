@@ -15,9 +15,38 @@ export default  {
   checkApi : (req, res, next) => {
 
     let except = [
-      'login'
+      '/api/login',
+      '/api/cek-login',
     ]
-    next()
+    console.log(except.indexOf(req.originalUrl))
+    
+    if(except.indexOf(req.originalUrl) < 0){
+
+      let token = req.header(process.env.JWT_NAME)
+		
+      let pesan = 'Server sedang bermasalah!'
+      let status = false
+      let decoded = ''
+      
+  
+      try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        pesan = ''
+        status = true
+      } catch(err) {
+        pesan = err.message
+        console.log(err);
+      }
+      
+  
+      status?next():res.send({
+        pesan: 'Anda harus login terlebih dahulu', 
+        status: false
+      });
+    }else{
+      
+      next()
+    }
 
   }
 }
