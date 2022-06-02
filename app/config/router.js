@@ -3,7 +3,7 @@ import middleware from '../middleware/UserMiddleware'
 const { check } = require('express-validator');
 
 // setting export all Controller
-function route(_route){
+const route = (_route) => {
   _route = _route.split("@")
   let path = '../controllers/'
   let name = _route[0].split("/").join("_")
@@ -18,13 +18,18 @@ function route(_route){
 
 const router = express.Router()
 
+// Api
 router.use('/api', middleware.checkApi);
-router.get("/api/tes", route('api/HomeController@index'))
 router.post("/api/login", [
   check('username').isLength({ min: 5 }),
   check('password').exists(),
 ], route('api/LoginController@login'))
 router.get("/api/cek-login", route('api/LoginController@cekLogin'))
+
+router.get("/api/tes", route('api/HomeController@index'))
+
+// . Api
+
 
 
 router.use('/admin', middleware.checkUser);
@@ -33,8 +38,8 @@ router.get("/admin/tes", route('HomeController@index'))
 router.get("/", route('HomeController'))
 router.get("/login", route('LoginController@index'))
 router.post("/login", route('LoginController@setLogin'))
-router.get("*", route('HomeController@notFound'))
 
+router.get("*", route('HomeController@notFound'))
 router.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Server sedang bermasalah');

@@ -3,6 +3,7 @@ var jwt = require('jsonwebtoken');
 export default  {
   checkUser : (req, res, next) => {
     try {
+      console.log(req.headers);
       let token = getTokenFromCookie(req.headers.cookie, process.env.JWT_NAME);
       let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if(typeof decoded.id == "number"){
@@ -33,7 +34,6 @@ export default  {
       let pesan = 'Server sedang bermasalah!'
       let status = false
       let decoded = ''
-      
   
       try {
         decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -49,7 +49,6 @@ export default  {
         status: false
       });
     }else{
-      
       next()
     }
 

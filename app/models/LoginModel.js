@@ -13,7 +13,6 @@ export default class LoginModel extends Model{
 			let pesan = 'Server sedang bermasalah!'
 
 			let hash = bcrypt.hashSync(password, 10);
-			console.log(hash)
 			var data = await super.query("SELECT * FROM "+this.table+" WHERE username = '"+username+"'")
 			let session = {}
 			if(data.length == 1){
