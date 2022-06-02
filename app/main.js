@@ -11,4 +11,6 @@ app.set("view engine", "hbs")
 app.use("/", router)
 app.set('config', config); 
 
-app.listen(8000);
+app.listen(8000, ()=>{
+  console.log(`jalan di 127.0.0.1:8000`);
+});

@@ -19,14 +19,14 @@ export default class LoginController{
 			var token = jwt.sign(cek.data, process.env.JWT_SECRET_KEY);
 
 			// set session token
-			res.cookie('cokkieName', token, { maxAge: 900000, httpOnly: true })
+			res.cookie(process.env.JWT_NAME, token, { maxAge: 900000000000000, httpOnly: true })
 			// . set session token
 			
 			res.redirect('/admin/tes');
 		}
 	}
 
-	static cekLogin(req, res){
+	static cekLoginApi(req, res){
 		token = ''
 		try {
 			decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);

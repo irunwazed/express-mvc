@@ -2,23 +2,29 @@ var jwt = require('jsonwebtoken');
 
 export default  {
   checkUser : (req, res, next) => {
-
-    console.log(req.headers)
-    var a = 1;
-    if(a== 1){
-      next()
-    }else{
+    try {
+      let token = getTokenFromCookie(req.headers.cookie, process.env.JWT_NAME);
+      let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      if(typeof decoded.id == "number"){
+        next()
+      }else{
+        res.redirect('/login');
+      }
+    }
+    catch(err) {
       res.redirect('/login');
     }
+
+    
   },
 
   checkApi : (req, res, next) => {
-
+    
     let except = [
       '/api/login',
       '/api/cek-login',
     ]
-    console.log(except.indexOf(req.originalUrl))
+    // console.log(except.indexOf(req.originalUrl))
     
     if(except.indexOf(req.originalUrl) < 0){
 
@@ -37,7 +43,6 @@ export default  {
         pesan = err.message
         console.log(err);
       }
-      
   
       status?next():res.send({
         pesan: 'Anda harus login terlebih dahulu', 
@@ -49,4 +54,18 @@ export default  {
     }
 
   }
+}
+
+function getTokenFromCookie(cookie, name){
+
+  var token = cookie;
+  token = token.split('; ')
+  var hasil = '';
+  for(let i = 0; i < token.length; i++){
+    let _token = token[i].split("=");
+    if(_token[0] == name){
+      hasil = _token[1];
+    }
+  }
+  return hasil;
 }

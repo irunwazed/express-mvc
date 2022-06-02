@@ -9,7 +9,7 @@ function route(_route){
   let name = _route[0].split("/").join("_")
   if(exports[name] == null){
     exports[name] = require(path+_route[0])
-    console.log(name)
+    // console.log(name)
   }
   return exports[name].default[(_route.length==1?'index':_route[1])]
 }
