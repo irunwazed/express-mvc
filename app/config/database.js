@@ -15,7 +15,7 @@ export default class Database{
 
 			this.con.connect(function(err) {
 				if (err) throw err;
-				console.log("Connected!");
+				// console.log("Connected!");
 			});
 
 			return this.con

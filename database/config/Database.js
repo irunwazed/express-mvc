@@ -16,43 +16,33 @@ module.exports = class Database{
       database: process.env.MYSQL_DATABASE
     });
 
-    // return new Promise(
-    //   this.con.connect(function(err) {
-    //     if (err){
-    //       reject()
-    //     };
-    //     console.log("Connected!");
-    //     resolve()
-    //   })
-    // ); 
-
-
-		await this.con.connect(function(err) {
-			if (err){
-				// reject()
-			};
-			console.log("Connected!");
-			// resolve()
-		})
+		// await this.con.connect(function(err) {
+    //   if (err) throw err;
+		// 	// if (err){
+		// 	// 	// reject()
+		// 	// };
+		// 	// console.log("Connected!");
+		// 	// resolve()
+		// })
 		// console.log(this.con);
     
-
     return this.con
   }
 
-  setQuery(query){
-    console.log(query)
-    var data;
-  	this.con.query(query, function (err, result, fields) {
-  		if (err){
-        // throw err
-        Promise.reject(err)
-      }
-      // data = result
-      Promise.resolve(result)
-  		// console.log(result);
-  	});
-    // return data
-  }
+
+  // setQuery(query){
+  //   console.log(query)
+  //   var data;
+  // 	this.con.query(query, function (err, result, fields) {
+  // 		if (err){
+  //       // throw err
+  //       Promise.reject(err)
+  //     }
+  //     // data = result
+  //     Promise.resolve(result)
+  // 		// console.log(result);
+  // 	});
+  //   // return data
+  // }
   
 }

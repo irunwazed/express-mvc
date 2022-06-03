@@ -1,15 +1,44 @@
-module.exports = class Schema {
+import Model from '../../app/core/Model';
+
+export default class Schema {
 	
-	create(_name, _callBack){
-		return _callBack(new Table(_name));
+	constructor(){
+		this.DB = new Model();
 	}
 
+	create(_name, _callBack){
+		this.createTable(_callBack(new Table(_name)));
+	}
+
+	async createTable(Schema){
+		let querySQL = '';
+	
+		querySQL += 'CREATE TABLE '+ Schema.name+ ' (';
+		for(let j = 0; j < Schema.column.length; j++){
+			querySQL += ' '+ Schema.column[j].name + ' ';
+			for(let k = 0; k < Schema.column[j].type.length; k++){
+				querySQL += ' '+ Schema.column[j].type[k] + ''; 
+			}
+			if(j+1 < Schema.column.length){
+				querySQL += ', '
+			}
+		}
+		querySQL += '); ';
+		try {
+			var data = await this.DB.query(querySQL);
+			console.log(Schema.name+' berhasil terbuat!');
+		}
+		catch(err) {
+			console.log(err);
+		}
+	}
+	
 }
 
 class Table {
 
 	constructor(_name){
-		this.table = _name;
+		this.name = _name;
 		this.column = [];
 		
 		this.timeUpdate = [
@@ -30,14 +59,58 @@ class Table {
 				],
 			},
 		];
+
+		return this;
 	}
 
-	integer(_name, _type = []){
-		_type.unshift('INT');
+	double(_name, from, to){
 		this.column.push({
 			name: _name,
-			type: _type,
+			type: [
+				'DOUBLE('+from+','+to+')'
+			],
 		})
+		return this;
+	}
+
+	integer(_name){
+		this.column.push({
+			name: _name,
+			type: [
+				'INT'
+			],
+		})
+		return this;
+	}
+
+	tinyInteger(_name){
+		this.column.push({
+			name: _name,
+			type: [
+				'TINYINT',
+			],
+		})
+		return this;
+	}
+
+	string(_name, bts = 225){
+		this.column.push({
+			name: _name,
+			type: [
+				'varchar('+bts+')',
+			],
+		})
+		return this;
+	}
+
+	text(_name){
+		this.column.push({
+			name: _name,
+			type: [
+				'TEXT',
+			],
+		})
+		return this;
 	}
 
 	id(_name){
@@ -48,13 +121,40 @@ class Table {
 				'AUTO_INCREMENT',
 				'PRIMARY KEY',
 			],
-		})
+		});
+		return this;
 	}
+
+	dateTime(){
+		this.column.push({
+			name: _name,
+			type: [
+				'DATETIME',
+			],
+		})
+		return this;
+	}
+
+
+	timestamps(){
+		this.column = [... this.column, ... this.timeUpdate];
+		return this;
+	}
+
+
+  nullable(){
+    this.column[this.column.length-1].type.push('NULL');
+    return this;
+  }
+  unsigned(){
+    this.column[this.column.length-1].type.push('UNSIGNED');
+    return this;
+  }
 
 	getResult(){
 		return {
-			name: this.table,
-			column: [... this.column, ... this.timeUpdate],
+			name: this.name,
+			column: this.column,
 		}
 	}
 
