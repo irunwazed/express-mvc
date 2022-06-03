@@ -1,6 +1,6 @@
 import express from 'express'
 import middleware from '../middleware/UserMiddleware'
-const { check } = require('express-validator');
+import { check } from 'express-validator';
 
 // setting export all Controller
 const route = (_route) => {

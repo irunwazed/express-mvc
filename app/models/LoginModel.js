@@ -1,10 +1,9 @@
 import Model from '../core/Model'
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export default class LoginModel extends Model{
-    constructor(_req){
-			super(_req)
-			this.req = _req
+    constructor(){
+			super()
 			this.table = 'login'
     }
 

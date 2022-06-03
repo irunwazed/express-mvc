@@ -1,12 +1,10 @@
-const util = require('util');
+import util from 'util';
+import config from '../config/config'
 
 export default class Model{
-	constructor(req){
-		this.req = req
-	}
 
 	async query(_query){
-		const queryExecute = util.promisify(this.req.app.get('config').DB.query).bind(this.req.app.get('config').DB);
+		const queryExecute = util.promisify(config.DB.query).bind(config.DB);
 		var data
 		try{
 			data = await queryExecute(_query)

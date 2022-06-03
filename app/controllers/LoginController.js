@@ -1,6 +1,4 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
-dotenv.config()
 
 import LoginModel from '../models/LoginModel'
 
@@ -11,7 +9,7 @@ export default class LoginController{
 	}
 
 	static async setLogin(req, res) {
-		const login = new LoginModel(req)
+		const login = new LoginModel()
 		let cek = await login.cek_login(req.body.username, req.body.password)
 		if(!cek.status){
 			res.redirect('/login');

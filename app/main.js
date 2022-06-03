@@ -2,6 +2,9 @@ import express from "express"
 import router from "./config/router"
 import config from "./config/config"
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 const app = express()
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())

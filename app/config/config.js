@@ -1,7 +1,7 @@
 import Database from './database'
 import dotenv from 'dotenv'
-
 dotenv.config()
+
 var DB = new Database()
 
 export default  {

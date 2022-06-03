@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator';
-// import dotenv from 'dotenv'
-// dotenv.config()
 
 import LoginModel from '../../models/LoginModel'
 
@@ -12,7 +10,7 @@ export default class LoginController{
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.array() });
 		}
-		const login = new LoginModel(req)
+		const login = new LoginModel()
 		let cek = await login.cek_login(req.body.username, req.body.password)
 		
 		if(!cek.status){
