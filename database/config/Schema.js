@@ -1,10 +1,17 @@
 module.exports = class Schema {
 	
-	constructor(_name){
-		this.name = _name;
-		this.column = [];
-		this.table;
+	create(_name, _callBack){
+		return _callBack(new Table(_name));
+	}
 
+}
+
+class Table {
+
+	constructor(_name){
+		this.table = _name;
+		this.column = [];
+		
 		this.timeUpdate = [
 			{
 				name: 'created_at',
@@ -25,34 +32,30 @@ module.exports = class Schema {
 		];
 	}
 
-	create(_name, table){
-		// table.nama;
-		console.log('dalam');
-		console.log(table);
-		console.log('dalam');
-		
-		return table;
-	}
-
-
-	
-
 	integer(_name, _type = []){
 		_type.unshift('INT');
 		this.column.push({
 			name: _name,
-			type: _type
+			type: _type,
 		})
 	}
 
-
-	getResult(){
-		return this.table = {
-			name: this.name,
-			column: [... this.column, ... this.timeUpdate]
-		};
+	id(_name){
+		this.column.push({
+			name: _name,
+			type: [
+				'INT',
+				'AUTO_INCREMENT',
+				'PRIMARY KEY',
+			],
+		})
 	}
 
-
+	getResult(){
+		return {
+			name: this.table,
+			column: [... this.column, ... this.timeUpdate],
+		}
+	}
 
 }

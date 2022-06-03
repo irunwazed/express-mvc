@@ -1,9 +1,53 @@
 const Database = require('../config/Database');
 const util = require('util');
-// const DB = require('../../app/config/database');
+
+let dataExport = {};
+let dataSchema = [];
+loadFile();
+async function loadFile(){
+  var fs = require('fs');
+  fs.readdirSync(__dirname + '/').forEach(function(file) {
+    if (file.match(/\.js$/) !== null && file !== 'index.js') {
+      var name = file.replace('.js', '');
+			dataExport[name] = require('./' + file);
+			let tes =  dataExport[name].up();
+      dataSchema.push(tes);
+    }
+  });
+	console.log(dataSchema);
+	createTable(dataSchema)
+}
+
+// console.log(dataSchema);
 
 
-async function readAll(){
+async function  createTable(Schema){
+	let querySQL = '';
+
+	for(let i = 0; i < Schema.length; i++){
+		querySQL += 'CREATE TABLE '+ Schema[i].name+ ' (';
+		for(let j = 0; j < Schema[i].column.length; j++){
+			querySQL += ' '+ Schema[i].column[j].name + ' ';
+			for(let k = 0; k < Schema[i].column[j].type.length; k++){
+				querySQL += ' '+ Schema[i].column[j].type[k] + ''; 
+			}
+			if(j+1 < Schema[i].column.length){
+				querySQL += ', '
+			}
+		}
+	}
+	querySQL += '); ';
+	console.log(querySQL);
+	
+  const database =  await new Database().setConnection();
+	const queryExecute = util.promisify(database.query).bind(database);
+	let query = "SELECT * FROM login";
+	let data = await queryExecute(querySQL);
+}
+
+
+
+async function schemaToQuery(){
   const database =  await new Database().setConnection();
 	const queryExecute = util.promisify(database.query).bind(database);
 	// console.log(database); 
@@ -100,32 +144,3 @@ async function readAll(){
   //   }
   // });
 }
-
-const Schema = require('./Schema');
-
-function toSchema(){
-	var table = new Schema('ref_user');
-	table.integer('id', ['PRIMARY KEY']);
-	table.integer('tahun');
-
-	console.log(table.getResult().column);
-
-}
-
-function toSchema2(){
-	var table = new Schema('ref_user');
-
-	table.create('ref_user', (tbl)=>{
-		tbl;
-		// console.log(tbl);
-
-		console.log('luar');
-		console.log(tbl);
-		console.log('luar');
-
-		return tbl;
-	})
-}
-
-
-toSchema2()
