@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 export default  {
   checkUser : (req, res, next) => {
     try {
-      console.log(req.headers);
+      // console.log(req.headers);
       let token = getTokenFromCookie(req.headers.cookie, process.env.JWT_NAME);
       let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if(typeof decoded.id == "number"){

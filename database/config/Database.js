@@ -7,7 +7,7 @@ module.exports = class Database{
   constructor() {
   }
 
-  setConnection(resolve, reject){
+  async setConnection(){
 
     this.con = mysql.createConnection({
       host: process.env.MYSQL_HOST,
@@ -16,18 +16,28 @@ module.exports = class Database{
       database: process.env.MYSQL_DATABASE
     });
 
-    return new Promise(
-      this.con.connect(function(err) {
-        if (err){
-          reject()
-        };
-        console.log("Connected!");
-        resolve()
-      })
-    ); 
+    // return new Promise(
+    //   this.con.connect(function(err) {
+    //     if (err){
+    //       reject()
+    //     };
+    //     console.log("Connected!");
+    //     resolve()
+    //   })
+    // ); 
+
+
+		await this.con.connect(function(err) {
+			if (err){
+				// reject()
+			};
+			console.log("Connected!");
+			// resolve()
+		})
+		// console.log(this.con);
     
 
-    // return this.con
+    return this.con
   }
 
   setQuery(query){
