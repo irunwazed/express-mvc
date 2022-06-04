@@ -15,8 +15,6 @@ export default  {
     catch(err) {
       res.redirect('/login');
     }
-
-    
   },
 
   checkApi : (req, res, next) => {
