@@ -23,7 +23,16 @@ module.exports = class TableUser{
     });
 
     this.DB = new Model();
-    let query = "INSERT INTO `ref_login` (`id`, `login_username`, `login_password`, `login_akun`, `login_level`, `login_status`, `created_at`, `updated_at`) VALUES (NULL, 'admin', '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
+		// await this.DB.insert('ref_login', {
+		// 	login_username: 'admin',
+		// 	login_password: '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni',
+		// 	login_akun: 1,
+		// 	login_level: 1,
+		// 	login_status: 1,
+		// });
+		let query = "INSERT INTO ref_login ( login_username, login_password, login_akun, login_level, login_status ) VALUES (  'admin' ,  '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni' ,  '1' ,  '1' ,  '1'  );";
+
+    // let query = "INSERT INTO `ref_login` (`id`, `login_username`, `login_password`, `login_akun`, `login_level`, `login_status`, `created_at`, `updated_at`) VALUES (NULL, 'admin', '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
     var data = await this.DB.query(query);
 
   }
