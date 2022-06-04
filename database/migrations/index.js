@@ -14,30 +14,37 @@ class Migration {
 
 
 	async truncate(){
-		const DB = new Model();
+		// const DB = new Model();
 		let query = 'DROP DATABASE '+process.env.MYSQL_DATABASE;
-		var data = await DB.query(query);
+		const database =  await new Database().setConnection();
+		const queryExecute = util.promisify(database.query).bind(database);
+		var data = await queryExecute(query);
 		let query2 = 'CREATE DATABASE '+process.env.MYSQL_DATABASE;
-		data = await DB.query(query2);
+		data = await queryExecute(query2);
 		
 	}
 
 	async loadFile(){
 		const dataExports = {};
-		fs.readdirSync(__dirname + '/').forEach(function(file) {
+		let no = 0;
+		await fs.readdirSync(__dirname + '/').forEach( async function(file) {
+			no++;
 			if (file.match(/\.js$/) !== null && file !== 'index.js') {
 				try {
 					
 					var name = file.replace('.js', '');
 					dataExports[name] = require('./' + file);
-					dataExports[name].up();
+					await dataExports[name].up();
 				}
 				catch(err) {
 					console.log(err);
 				}
+				if(no == fs.readdirSync(__dirname + '/').length){
+					console.log('selesai');
+					process.exit();
+				}
 			}
 		});
-		console.log('selesai');
 	}
 
 	async run(){
@@ -47,7 +54,7 @@ class Migration {
 	}
 
 }
-// start()
+start()
 async function start(){
 	const migration = new Migration();
 	await migration.run();
@@ -65,7 +72,7 @@ async function start(){
 
 /////////// versi awal
 
-jalan();
+// jalan();
 
 let dataExport = {};
 

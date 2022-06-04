@@ -23,7 +23,7 @@ module.exports = class TableUser{
     });
 
     this.DB = new Model();
-    let query = "INSERT INTO `ref_login` (`id`, `login_username`, `login_password`, `login_akun`, `login_level`, `login_status`, `created_at`, `updated_at`) VALUES (NULL, 'admin2', '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
+    let query = "INSERT INTO `ref_login` (`id`, `login_username`, `login_password`, `login_akun`, `login_level`, `login_status`, `created_at`, `updated_at`) VALUES (NULL, 'admin', '$2b$10$MqG33qZt8CJQD/gPKWmL6u0o/bMC8Sa8Phn3v96eHVZjpZa5oreni', '1', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
     var data = await this.DB.query(query);
 
   }

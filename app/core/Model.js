@@ -3,6 +3,7 @@ import config from '../config/config'
 // import Database from '../config/database';
 
 export default class Model{
+	
 
 	async query(_query){
 		
