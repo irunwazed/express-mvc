@@ -28,7 +28,6 @@ export default class LoginModel extends Model{
 					pesan = 'Password Salah!'
 				}
 			}else{
-
 				pesan = 'User tidak ditemukan'
 			}
 			

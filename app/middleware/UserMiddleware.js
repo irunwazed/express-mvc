@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
+import {getTokenFromCookie} from '../config/library'
 
 export default  {
   checkUser : (req, res, next) => {
     try {
       // console.log(req.headers);
       let token = getTokenFromCookie(req.headers.cookie, process.env.JWT_NAME);
+      
       let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       if(typeof decoded.id == "number"){
         next()
@@ -53,16 +55,16 @@ export default  {
   }
 }
 
-function getTokenFromCookie(cookie, name){
+// function getTokenFromCookie(cookie, name){
 
-  var token = cookie;
-  token = token.split('; ')
-  var hasil = '';
-  for(let i = 0; i < token.length; i++){
-    let _token = token[i].split("=");
-    if(_token[0] == name){
-      hasil = _token[1];
-    }
-  }
-  return hasil;
-}
+//   var token = cookie;
+//   token = token.split('; ')
+//   var hasil = '';
+//   for(let i = 0; i < token.length; i++){
+//     let _token = token[i].split("=");
+//     if(_token[0] == name){
+//       hasil = _token[1];
+//     }
+//   }
+//   return hasil;
+// }

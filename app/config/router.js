@@ -1,5 +1,5 @@
 import express from 'express'
-import middleware from '../middleware/UserMiddleware'
+import userMiddleware from '../middleware/UserMiddleware'
 import { check } from 'express-validator';
 
 // setting export all Controller
@@ -19,7 +19,7 @@ const route = (_route) => {
 const router = express.Router()
 
 // Api
-router.use('/api', middleware.checkApi);
+router.use('/api', userMiddleware.checkApi);
 router.post("/api/login", [
   check('username').isLength({ min: 5 }),
   check('password').exists(),
@@ -27,17 +27,16 @@ router.post("/api/login", [
 router.get("/api/cek-login", route('api/LoginController@cekLogin'))
 
 router.get("/api/tes", route('api/HomeController@index'))
-
 // . Api
-
-
-
-router.use('/admin', middleware.checkUser);
-router.get("/admin/tes", route('HomeController@index'))
 
 router.get("/", route('HomeController'))
 router.get("/login", route('LoginController@index'))
 router.post("/login", route('LoginController@setLogin'))
+router.get("/logout", route('LoginController@logout'))
+
+router.use('/admin', userMiddleware.checkUser);
+router.get("/admin/tes", route('HomeController@index'))
+
 
 router.get("*", route('HomeController@notFound'))
 router.use(function(err, req, res, next) {
