@@ -13,6 +13,7 @@ export default class LoginModel extends Model{
 
 			let hash = bcrypt.hashSync(password, 10);
 			var data = await super.query("SELECT * FROM "+this.table+" WHERE login_username = '"+username+"'")
+
 			let session = {}
 			if(data.length == 1){
 				if (bcrypt.compareSync(password, data[0].login_password)) {

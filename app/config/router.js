@@ -37,7 +37,6 @@ router.get("/logout", route('LoginController@logout'))
 router.use('/admin', userMiddleware.checkUser);
 router.get("/admin/tes", route('HomeController@index'))
 
-
 router.get("*", route('HomeController@notFound'))
 router.use(function(err, req, res, next) {
   console.error(err.stack);

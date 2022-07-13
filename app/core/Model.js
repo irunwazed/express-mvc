@@ -23,8 +23,6 @@ export default class Model {
   async insert(table, _data) {
 
     try {
-
-
 			let query = "INSERT INTO " + table + " ( ";
 			let name = [];
 			let data = [];
