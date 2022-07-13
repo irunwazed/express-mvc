@@ -12,7 +12,6 @@ class Migration {
 	constructor(){
 	}
 
-
 	async truncate(){
 		// const DB = new Model();
 		let query = 'DROP DATABASE '+process.env.MYSQL_DATABASE;
@@ -27,23 +26,29 @@ class Migration {
 	async loadFile(){
 		const dataExports = {};
 		let no = 0;
+		let bts = fs.readdirSync(__dirname + '/').length - 1;
+		
 		await fs.readdirSync(__dirname + '/').forEach( async function(file) {
-			no++;
+			
 			if (file.match(/\.js$/) !== null && file !== 'index.js') {
 				try {
 					
 					var name = file.replace('.js', '');
-					console.log(name);
 					dataExports[name] = require('./' + file);
 					await dataExports[name].up();
-				}
-				catch(err) {
+					no++;
+					if(no >= bts){
+						console.log('selesai');
+						// process.exit();
+						// console.log(process);
+						process.on('exit', function (code) {
+							return console.log(`Process to exit with code ${code}`);
+					});
+					}
+				}catch(err) {
 					console.log(err);
 				}
-				if(no == fs.readdirSync(__dirname + '/').length){
-					console.log('selesai');
-					process.exit();
-				}
+				
 			}
 		});
 	}

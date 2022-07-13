@@ -1,5 +1,5 @@
-import express from 'express'
-import userMiddleware from '../middleware/UserMiddleware'
+import express from 'express';
+import userMiddleware from '../middleware/UserMiddleware';
 import { check } from 'express-validator';
 
 // setting export all Controller
@@ -30,10 +30,6 @@ router.get("/api/tes", route('api/HomeController@index'))
 // . Api
 
 
-// router.use('/', (req, res, next)=>{
-// 	res.locals.baseUrl = 'http://127.0.0.1:8000/';
-// 	next();
-// });
 router.get("/", route('AwalController'))
 router.get("/login", route('LoginController@index'))
 router.post("/login", route('LoginController@setLogin'))
@@ -41,6 +37,10 @@ router.get("/logout", route('LoginController@logout'))
 
 router.use('/admin', userMiddleware.checkUser);
 router.get("/admin/tes", route('HomeController@index'))
+router.get('/admin/:userId', (req, res) => {
+  req.params; // { userId: '42' }
+  res.json(req.params);
+});
 
 router.get("*", route('HomeController@notFound'))
 router.use(function(err, req, res, next) {

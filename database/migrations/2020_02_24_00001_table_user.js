@@ -1,11 +1,11 @@
 import Schema from '../config/Schema';
-import Model2 from '../../app/core/Model';
+import Model from '../../app/core/Model';
 
 
 module.exports = class TableUser{
 
   constructor() {
-
+    
   }
 
   static async up(){
@@ -18,11 +18,9 @@ module.exports = class TableUser{
       table.tinyInteger('login_level');
       table.tinyInteger('login_status');
       table.timestamps();
-      
-      return table.getResult();
     });
 
-    this.DB2 = new Model2();
+    this.DB = new Model();
 
 		var data = {
 			login_username: 'admin',
@@ -31,8 +29,7 @@ module.exports = class TableUser{
 			login_level: 1,
 			login_status: 1,
 		};
-
-		await this.DB2.insert('ref_login',data);
+		await this.DB.insert('ref_login',data);
 
   }
 
