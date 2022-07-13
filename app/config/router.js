@@ -29,7 +29,12 @@ router.get("/api/cek-login", route('api/LoginController@cekLogin'))
 router.get("/api/tes", route('api/HomeController@index'))
 // . Api
 
-router.get("/", route('HomeController'))
+
+// router.use('/', (req, res, next)=>{
+// 	res.locals.baseUrl = 'http://127.0.0.1:8000/';
+// 	next();
+// });
+router.get("/", route('AwalController'))
 router.get("/login", route('LoginController@index'))
 router.post("/login", route('LoginController@setLogin'))
 router.get("/logout", route('LoginController@logout'))

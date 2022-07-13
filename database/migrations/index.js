@@ -33,6 +33,7 @@ class Migration {
 				try {
 					
 					var name = file.replace('.js', '');
+					console.log(name);
 					dataExports[name] = require('./' + file);
 					await dataExports[name].up();
 				}

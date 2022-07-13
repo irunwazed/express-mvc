@@ -4,13 +4,42 @@ export default class Schema {
 	
 	constructor(){
 		this.DB = new Model();
+		this.SQL = '';
 	}
 
 	create(_name, _callBack){
 		this.createTable(_callBack(new Table(_name)));
 	}
 
+	// async schemaToSQL(Schema){
+	// 	let querySQL = '';
+	
+	// 	querySQL += 'CREATE TABLE '+ Schema.name+ ' (';
+	// 	for(let j = 0; j < Schema.column.length; j++){
+	// 		querySQL += ' '+ Schema.column[j].name + ' ';
+	// 		for(let k = 0; k < Schema.column[j].type.length; k++){
+	// 			querySQL += ' '+ Schema.column[j].type[k] + ''; 
+	// 		}
+	// 		if(j+1 < Schema.column.length){
+	// 			querySQL += ', '
+	// 		}
+	// 	}
+	// 	querySQL += '); ';
+	// 	return querySQL;
+	// }
+
+	// async createDB(){
+	// 	try {
+	// 		var data = await this.DB.query(this.SQL);
+	// 		console.log(Schema.name+' berhasil terbuat!');
+	// 	}
+	// 	catch(err) {
+	// 		console.log(err);
+	// 	}
+	// }
+
 	async createTable(Schema){
+		// this.DB = new Model();
 		let querySQL = '';
 	
 		querySQL += 'CREATE TABLE '+ Schema.name+ ' (';
@@ -24,7 +53,9 @@ export default class Schema {
 			}
 		}
 		querySQL += '); ';
+		// console.log(querySQL);
 		try {
+			
 			var data = await this.DB.query(querySQL);
 			console.log(Schema.name+' berhasil terbuat!');
 		}
@@ -146,10 +177,25 @@ class Table {
     this.column[this.column.length-1].type.push('NULL');
     return this;
   }
-  unsigned(){
-    this.column[this.column.length-1].type.push('UNSIGNED');
+  // unsigned(){
+  //   this.column[this.column.length-1].type.push('UNSIGNED');
+  //   return this;
+  // }
+
+	foreign(_name){
+		this.column.push({
+			name: 'CONSTRAINT foreign_'+_name+' FOREIGN KEY ('+_name+')',
+			type: [
+				'',
+			],
+		})
+		return this;
+	}
+
+	references(_table, _name){
+    this.column[this.column.length-1].type.push('REFERENCES '+_table+'('+_name+')');
     return this;
-  }
+	}
 
 	getResult(){
 		return {

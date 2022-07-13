@@ -1,6 +1,7 @@
 import express from "express";
 import router from "./config/router";
 import config from "./config/config";
+import autoload from "./config/autoload";
 
 
 
@@ -12,6 +13,10 @@ app.set("views", "app/views");
 app.set("view engine", "hbs");
 app.use("/", router);
 app.set('config', config);
+
+// app = autoload.setLocal(app)
+
+app.locals.globalVar = autoload;
 
 app.listen(8000, ()=>{
   console.log(`jalan di 127.0.0.1:8000`);
