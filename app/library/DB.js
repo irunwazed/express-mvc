@@ -75,14 +75,19 @@ class DB {
     let model = new Model();
     return await model.query(query);
   }
+	
+	async insert(_data){
+
+		let model = new Model();
+		let status = await model.insert(this.qTable, _data);
+		return status;
+	}
 
   getSQL(){
     let query = `
     SELECT ${this.qSelect}
     FROM ${this.qTable}
-
     ${this.qJoin}
-
     ${this.qWhere}
     `;
     return query;

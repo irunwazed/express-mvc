@@ -9,7 +9,6 @@ const route = (_route) => {
   let name = _route[0].split("/").join("_")
   if(exports[name] == null){
     exports[name] = require(path+_route[0])
-    // console.log(name)
   }
   return exports[name].default[(_route.length==1?'index':_route[1])]
 }
@@ -19,13 +18,12 @@ const route = (_route) => {
 const router = express.Router()
 
 // Api
-router.use('/api', userMiddleware.checkApi);
 router.post("/api/login", [
   check('username').isLength({ min: 5 }),
   check('password').exists(),
 ], route('api/LoginController@login'))
 router.get("/api/cek-login", route('api/LoginController@cekLogin'))
-
+router.use('/api', userMiddleware.checkApi);
 router.get("/api/tes", route('api/HomeController@index'))
 // . Api
 
