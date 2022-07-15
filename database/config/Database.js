@@ -28,21 +28,4 @@ module.exports = class Database{
     
     return this.con
   }
-
-
-  // setQuery(query){
-  //   console.log(query)
-  //   var data;
-  // 	this.con.query(query, function (err, result, fields) {
-  // 		if (err){
-  //       // throw err
-  //       Promise.reject(err)
-  //     }
-  //     // data = result
-  //     Promise.resolve(result)
-  // 		// console.log(result);
-  // 	});
-  //   // return data
-  // }
-  
 }
