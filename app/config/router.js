@@ -8,7 +8,6 @@ const route = (_route) => {
   let path = '../controllers/'
   let name = _route[0].split("/").join("_")
   if(exports[name] == null){
-		console.log(path+_route[0]);
     exports[name] = require(path+_route[0])
   }
   return exports[name].default[(_route.length==1?'index':_route[1])]
@@ -36,10 +35,15 @@ router.get("/logout", route('LoginController@logout'))
 router.use('/admin', userMiddleware.checkUser);
 router.get("/admin/tes", route('HomeController@index'))
 router.get("/admin/data/penduduk", route('PendudukController@index'))
-router.get('/admin/:userId', (req, res) => {
-  req.params; // { userId: '42' }
-  res.json(req.params);
-});
+router.get("/admin/data/penduduk/get-data", route('PendudukController@getData'))
+router.get("/admin/data/penduduk/get-data/:id", route('PendudukController@getDataById'))
+router.post("/admin/data/penduduk/create", route('PendudukController@create'))
+router.post("/admin/data/penduduk/update", route('PendudukController@update'))
+router.get("/admin/data/penduduk/delete/:id", route('PendudukController@delete'))
+// router.get('/admin/:userId', (req, res) => {
+//   req.params; // { userId: '42' }
+//   res.json(req.params);
+// });
 
 router.get("*", route('HomeController@notFound'))
 router.use(function(err, req, res, next) {

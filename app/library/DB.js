@@ -79,7 +79,16 @@ class DB {
 	async insert(_data){
 
 		let model = new Model();
-		let status = await model.insert(this.qTable, _data);
+    let status = false;
+
+    if(typeof _data.length == 'number'){
+      let table = this.qTable;
+      for(let i = 0; i < _data.length; i++){
+        status = await model.insert(table, _data[i]);
+      }
+    }else{
+      status = await model.insert(this.qTable, _data);
+    }
 		return status;
 	}
 	
@@ -94,13 +103,25 @@ class DB {
     });
     column = column.slice(0, -1);
 
-
 		let query = `
     UPDATE ${this.qTable}
 
 		SET ${column}
 
     ${this.qWhere}
+    `;
+    
+    
+    this.reset();
+
+    let model = new Model();
+    return await model.query(query);
+	}
+
+  async delete(id){
+
+		let query = `
+    DELETE FROM ${this.qTable} ${this.qWhere}
     `;
     
     

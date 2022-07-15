@@ -1,5 +1,5 @@
 import Schema from '../config/Schema';
-import Model from '../../app/core/Model';
+import DB from '../../app/library/DB';
 
 
 module.exports = class TablePenduduk{
@@ -17,13 +17,14 @@ module.exports = class TablePenduduk{
       table.tinyInteger('penduduk_status');
       table.timestamps();
     });
-    this.DB = new Model();
-    var data = {
-			penduduk_nama: 'aka',
-			penduduk_nik: '74711',
-			penduduk_status: 1,
-		};
-		await this.DB.insert('ref_penduduk',data);
+
+    var data = [
+      { penduduk_nama: 'aka', penduduk_nik: '74711', penduduk_status: 1, },
+      { penduduk_nama: 'irun', penduduk_nik: '74711', penduduk_status: 1, },
+      { penduduk_nama: 'sinta', penduduk_nik: '74711', penduduk_status: 1, },
+      { penduduk_nama: 'jojo', penduduk_nik: '74711', penduduk_status: 1, },
+    ];
+		await DB.table('ref_penduduk').insert(data);
     
   }
 

@@ -1,5 +1,5 @@
 import Schema from '../config/Schema';
-import Model from '../../app/core/Model';
+import DB from '../../app/library/DB';
 
 
 module.exports = class TablePendudukUser{
@@ -20,13 +20,11 @@ module.exports = class TablePendudukUser{
       table.foreign('penduduk_id').references('ref_penduduk', 'id').onDelete('CASCADE').onUpdate('CASCADE');
       
     });
-
-    this.DB = new Model();
     var data = {
 			penduduk_id: 1,
 			user_id: 1,
 		};
-		await this.DB.insert('ref_penduduk_user',data);
+		await DB.table('ref_penduduk_user').insert(data);
 
   }
 

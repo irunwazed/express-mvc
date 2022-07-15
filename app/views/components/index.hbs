@@ -33,7 +33,8 @@
 		</div>
 		<div class="content">
 			<h3>HUMAN LIST</h3>
-			<table>
+			<button onclick="setCreate()">Tambah</button>
+			<table id="table-data">
 				<thead>
 					<tr>
 						<th>NO</th>
@@ -45,23 +46,96 @@
 				<tbody>
 				</tbody>
 			</table>
+			<br><br><br>
+			<form action="" id="form-data" method="post">
+				<input type="hidden" name="id">
+				<input type="text" name="penduduk_nama"><br>
+				<input type="text" name="penduduk_nik"><br>
+				<button type="submit">Simpan</button>
+			</form>
 		</div>
 	</div>
 
 	<script>
+
+		var path = window.location.pathname;
+		var action = '/create';
 		$(document).ready(function () {
-			$("button").click(function () {
-				
+			getData();
+		});
+
+		function getData() {
+			$.ajax({
+				url: path + "/get-data",
+				success: function (result) {
+					console.log(result)
+					no = 1;
+					if (result.status) {
+						$('#table-data > tbody').empty();
+						for (let i = 0; i < result.data.length; i++) {
+							$('#table-data > tbody').append(`
+						<tr>
+							<td>${no}</td>
+							<td>${result.data[i].penduduk_nama}</td>
+							<td>${result.data[i].penduduk_nik}</td>
+							<td>
+								<a href="#" onClick="setUpdate(${result.data[i].id})">edit</a>
+								<a href="#" onClick="doDelete(${result.data[i].id})">hapus</a>
+							</td>
+						</tr>
+						`);
+						}
+					}
+				}
+			});
+		}
+
+		function setCreate() {
+			$("#form-data")[0].reset();
+			action = '/create';
+		}
+
+
+		function setUpdate(id) {
+			action = '/update';
+			$.ajax({
+				url: path + "/get-data/" + id,
+				success: function (result) {
+					console.log(result);
+					$('input[name="id"]').val(result.data.id)
+					$('input[name="penduduk_nama"]').val(result.data.penduduk_nama)
+					$('input[name="penduduk_nik"]').val(result.data.penduduk_nik)
+				}
+			});
+		}
+
+		$("#form-data").submit(function (e) {
+			e.preventDefault();
+			data = $(this).serialize();
+			console.log(data);
+			$.ajax({
+				url: path + action,
+				type: "POST",
+				data: data,
+				success: function (result) {
+					$("#form-data")[0].reset();
+					getData();
+				}
 			});
 		});
 
-		function getData(){
-			$.ajax({
-				url: "demo_test.txt",
-				success: function (result) {
-					$("#div1").html(result);
-				}
-			});
+		function doDelete(id) {
+			if (confirm("Apakah anda yakin hapus") == true) {
+				$.ajax({
+					url: path + "/delete/" + id,
+					success: function (result) {
+						getData();
+					}
+				});
+			} else {
+
+			}
+
 		}
 	</script>
 
