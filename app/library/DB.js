@@ -30,7 +30,7 @@ class DB {
     if(this.qWhere != ''){
       where = ' AND'
     }
-    this.qWhere += where+" "+_val1+" = "+_val2;
+    this.qWhere += where+" "+_val1+" = '"+_val2+"'";
     return this;
   }
 
@@ -81,6 +81,33 @@ class DB {
 		let model = new Model();
 		let status = await model.insert(this.qTable, _data);
 		return status;
+	}
+	
+	async update(_data){
+
+		let column = "";
+    let valueText = "";
+    let value = [];
+    Object.keys(_data).forEach((element) => {
+      column += " " + element + " = '"+_data[element]+"' ,";
+      value.push(_data[element]);
+    });
+    column = column.slice(0, -1);
+
+
+		let query = `
+    UPDATE ${this.qTable}
+
+		SET ${column}
+
+    ${this.qWhere}
+    `;
+    
+    
+    this.reset();
+
+    let model = new Model();
+    return await model.query(query);
 	}
 
   getSQL(){

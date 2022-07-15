@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<style>
+		.container {}
+
+		.header {
+			padding: 10px;
+			background-color: deepskyblue;
+			color: white;
+		}
+
+		.content {
+			padding: 20px;
+		}
+
+		body {
+			background-color: azure;
+			margin: 0px;
+		}
+	</style>
 </head>
+
 <body>
-	
 	<div class="container">
 		<div class="header">
-			<a href="{{ globalVar.baseUrl }}logout">Logout  </a>
+			<a href="{{ globalVar.baseUrl }}logout">Logout </a>
 		</div>
-		<div>
-			Admin
+		<div class="content">
+			<h3>HUMAN LIST</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>NAME</th>
+						<th>NIK</th>
+						<th>AKSI</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
 		</div>
 	</div>
+
+	<script>
+		$(document).ready(function () {
+			$("button").click(function () {
+				
+			});
+		});
+
+		function getData(){
+			$.ajax({
+				url: "demo_test.txt",
+				success: function (result) {
+					$("#div1").html(result);
+				}
+			});
+		}
+	</script>
+
 </body>
+
 </html>
